@@ -43,30 +43,31 @@ public class Main {
     }
     
     private Main init() {
-//        /* Alternativa 1 */
-//        try {
-//            words = Files.lines(Paths.get(FILE_PATH))
-//                .map(e -> e.split("\\s+"))
-//                .flatMap(Arrays::stream)
-//                .map(e -> e.replaceAll("[^a-zA-Z]", ""))
-//                .map(e -> e.toLowerCase())
-//                .collect(Collectors.toList());
-//        } catch (IOException ex) {
-//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-
-        /* Alternativa 2 */
+        /* Alternativa 1 */
         try {
-            File file = new File(FILE_PATH);
-            Scanner scan = new Scanner(file);
-            while(scan.hasNextLine()) {
-                for(String s : scan.nextLine().split(" ")) {
-                    words.add(s.replaceAll("[^a-zA-Z]", ""));
-                }
-            }
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            words = Files.lines(Paths.get(FILE_PATH))
+                .parallel()
+                .map(e -> e.split("\\s+"))
+                .flatMap(Arrays::stream)
+                .map(e -> e.replaceAll("[^a-zA-Z]", ""))
+                .map(e -> e.toLowerCase())
+                .collect(Collectors.toList());
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+//        /* Alternativa 2 */
+//        try {
+//            File file = new File(FILE_PATH);
+//            Scanner scan = new Scanner(file);
+//            while(scan.hasNextLine()) {
+//                for(String s : scan.nextLine().split(" ")) {
+//                    words.add(s.replaceAll("[^a-zA-Z]", "").toLowerCase());
+//                }
+//            }
+//        } catch (FileNotFoundException ex) {
+//            ex.printStackTrace();
+//        }
             
         return this;
     }
