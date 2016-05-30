@@ -7,12 +7,20 @@ package forkjoin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -20,7 +28,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class Main {
     private final String FILE_PATH = "cybersla.txt";
-    private final List<String> words = new ArrayList<>();
+    private List<String> words = new ArrayList<>();
     private Map<String, Integer> cuenta;
     private long startTime, midTime, stopTime;
 
@@ -35,6 +43,19 @@ public class Main {
     }
     
     private Main init() {
+//        /* Alternativa 1 */
+//        try {
+//            words = Files.lines(Paths.get(FILE_PATH))
+//                .map(e -> e.split("\\s+"))
+//                .flatMap(Arrays::stream)
+//                .map(e -> e.replaceAll("[^a-zA-Z]", ""))
+//                .map(e -> e.toLowerCase())
+//                .collect(Collectors.toList());
+//        } catch (IOException ex) {
+//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
+        /* Alternativa 2 */
         try {
             File file = new File(FILE_PATH);
             Scanner scan = new Scanner(file);
@@ -45,7 +66,8 @@ public class Main {
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
-        } 
+        }
+            
         return this;
     }
     
